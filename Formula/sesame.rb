@@ -1,3 +1,4 @@
+# Source of truth: github.com/qiwei66/homebrew-tap Formula/sesame.rb (copy changes back there).
 # Builds Sesame from source on the user's Mac (ad-hoc signed, no quarantine, no Apple Developer account).
 # Release bump: update url + sha256 (`shasum -a 256 <tarball>`), then
 #   brew install --build-from-source ./sesame.rb && brew test sesame
@@ -5,7 +6,7 @@ class Sesame < Formula
   desc "Find anything Claude Code & Codex made for you — just say it"
   homepage "https://github.com/qiwei66/sesame"
   url "https://github.com/qiwei66/sesame/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "c684181c8c320531a4c8b3e9f8311e2bf590d952b87b31bac70fbf83f65adc64"
+  sha256 "976724bf7a4136e124be9cd325181eef8351d4299828376ab8d2464e103be3fb"
   license "MIT"
   head "https://github.com/qiwei66/sesame.git", branch: "main"
 
@@ -29,9 +30,10 @@ class Sesame < Formula
   def caveats
     <<~EOS
       One step left: put Sesame in ~/Applications and start it.
-        mkdir -p ~/Applications && ln -sfn #{opt_prefix}/Sesame.app ~/Applications/Sesame.app && open ~/Applications/Sesame.app
+        mkdir -p ~/Applications && { [ ! -e ~/Applications/Sesame.app ] || [ -L ~/Applications/Sesame.app ] || mv ~/Applications/Sesame.app ~/Applications/Sesame.app.bak-$(date +%Y%m%d%H%M%S); } && ln -sfn #{opt_prefix}/Sesame.app ~/Applications/Sesame.app && open ~/Applications/Sesame.app
+      (An older Sesame.app copied there by `make install` is kept as Sesame.app.bak-<time>; delete it when you like.)
 
-      Hot key: ⌘Space (backup ⌥⇧Space), changeable in Settings.
+      Hot key: ⌥⇧Space (switch to ⌘Space in Settings › Hot key).
     EOS
   end
 
